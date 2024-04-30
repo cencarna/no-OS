@@ -1,8 +1,8 @@
 trigger:
-- main
-- staging/*
-- next_stable
-- 20*
+# - main
+- staging/ltc2992_test
+# - next_stable
+# - 20*
 
 pr:
 - main
