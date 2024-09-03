@@ -263,6 +263,7 @@ static int32_t max_uart_init(struct no_os_uart_desc **desc,
 {
 	int32_t ret;
 	int32_t stop, size, flow, parity;
+	sys_map_t map;
 	mxc_uart_regs_t *uart_regs;
 	struct max_uart_init_param *eparam;
 	struct no_os_uart_desc *descriptor;
@@ -353,7 +354,22 @@ static int32_t max_uart_init(struct no_os_uart_desc **desc,
 		goto error;
 	}
 
-	ret = MXC_UART_Init(uart_regs, descriptor->baud_rate, MAP_B);
+	switch (eparam->map) {
+	case UART_MAP_DEFAULT:
+		map = MAP_B;
+		break;
+	case UART_MAP_A:
+		map = MAP_A;
+		break;
+	case UART_MAP_B:
+		map = MAP_B;
+		break;
+	default:
+		ret = -EINVAL;
+		goto error;
+	}
+
+	ret = MXC_UART_Init(uart_regs, descriptor->baud_rate, map);
 	if (ret != E_NO_ERROR) {
 		ret = -EINVAL;
 		goto error;
@@ -381,7 +397,7 @@ static int32_t max_uart_init(struct no_os_uart_desc **desc,
 		goto error;
 	}
 
-	ret = MXC_UART_SetFlowCtrl(uart_regs, flow, 8, MAP_B);
+	ret = MXC_UART_SetFlowCtrl(uart_regs, flow, 8, map);
 	if (ret != E_NO_ERROR) {
 		ret = -EINVAL;
 		goto error;
