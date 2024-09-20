@@ -66,9 +66,9 @@ struct adc_demo_desc {
 	/** Dummy registers of device for testing */
 	uint8_t reg[MAX_ADC_ADDR];
 	/** Demo global device attribute */
-	uint32_t adc_global_attr;
+	int32_t adc_global_attr;
 	/** Demo device channel attribute */
-	uint32_t adc_ch_attr[MAX_ADC_ADDR];
+	int32_t adc_ch_attr[MAX_ADC_ADDR];
 	/** Active channel**/
 	uint32_t active_ch;
 	/** Number of samples in each buffer */
@@ -83,9 +83,9 @@ struct adc_demo_desc {
  */
 struct adc_demo_init_param {
 	/** Demo global dac attribute */
-	uint32_t dev_global_attr;
+	int32_t dev_global_attr;
 	/** Demo dac channel attribute */
-	uint32_t dev_ch_attr[MAX_ADC_ADDR];
+	int32_t dev_ch_attr[MAX_ADC_ADDR];
 	/** Number of samples in each buffer */
 	uint32_t ext_buff_len;
 	/**Array of buffers for each channel*/

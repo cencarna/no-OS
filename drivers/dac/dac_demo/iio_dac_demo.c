@@ -83,6 +83,7 @@ int get_dac_demo_attr(void *device, char *buf, uint32_t len,
 		      const struct iio_ch_info *channel, intptr_t attr_id)
 {
 	struct dac_demo_desc *desc;
+	int32_t vals[2];
 
 	if(!device)
 		return -ENODEV;
@@ -91,9 +92,23 @@ int get_dac_demo_attr(void *device, char *buf, uint32_t len,
 
 	switch(attr_id) {
 	case DAC_GLOBAL_ATTR:
-		return snprintf(buf,len,"%"PRIu32"",desc->dac_global_attr);
+		vals[0] = desc->dac_global_attr / 1000000;
+		if (desc->dac_global_attr < 0 && vals[0] != 0)
+			vals[1] = -(desc->dac_global_attr % 1000000);
+		else
+			vals[1] = desc->dac_global_attr % 1000000;
+		
+		return iio_format_value(buf, len, IIO_VAL_INT_PLUS_MICRO,
+					2, vals);
 	case DAC_CHANNEL_ATTR:
-		return snprintf(buf,len,"%"PRIu32"",desc->dac_ch_attr[channel->ch_num]);
+		vals[0] = desc->dac_ch_attr[channel->ch_num] / 1000000;
+		if (desc->dac_ch_attr[channel->ch_num] < 0 && vals[0] != 0)
+			vals[1] = -(desc->dac_ch_attr[channel->ch_num] % 1000000);
+		else
+			vals[1] = desc->dac_ch_attr[channel->ch_num] % 1000000;
+
+		return iio_format_value(buf, len, IIO_VAL_INT_PLUS_MICRO,
+					2, vals);
 	default:
 		return -EINVAL;
 	}
@@ -200,7 +215,12 @@ int set_dac_demo_attr(void *device, char *buf, uint32_t len,
 		      const struct iio_ch_info *channel, intptr_t attr_id)
 {
 	struct dac_demo_desc *desc;
-	uint32_t value = no_os_str_to_uint32(buf);
+	int32_t vals[2];
+	int32_t value;
+
+	/* Value saved in descriptor is micro-scaled */
+	iio_parse_value(buf, IIO_VAL_INT_PLUS_MICRO, &vals[0], &vals[1]);
+	value = vals[0] * 1000000 + (vals[0] < 0 ? -vals[1] : vals[1]);
 
 	if(!device)
 		return -ENODEV;
