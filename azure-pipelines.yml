@@ -4,11 +4,7 @@ trigger:
 - next_stable
 - 20*
 
-pr:
-- main
-- next_stable
-- 20*
-- staging/*
+pr: none
 
 variables:
   runCondition: true
