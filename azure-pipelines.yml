@@ -8,6 +8,7 @@ pr:
 - main
 - next_stable
 - 20*
+- staging/*
 
 variables:
   runCondition: true
