@@ -72,6 +72,7 @@ POWER MANAGEMENT
    projects/adp1050
    projects/dc2703a
    projects/ltc4296
+   projects/ltm4686
    projects/lt7170
    projects/lt7182s
    projects/lt8722
