@@ -75,6 +75,7 @@ POWER MANAGEMENT
    projects/ltc4162l
    projects/ltc4296
    projects/ltm4686
+   projects/lt3074
    projects/lt7170
    projects/lt7182s
    projects/lt8722
